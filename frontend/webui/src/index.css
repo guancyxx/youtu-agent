@@ -1515,6 +1515,33 @@ details[open] > .message-detail-content:has(.report-content) {
   transform: rotate(30deg);
 }
 
+/* Problem Library Button */
+.problem-library-button {
+  position: fixed;
+  top: 20px;
+  right: 70px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 1.2em;
+  z-index: 1000;
+  transition: all 0.2s ease;
+  background: rgba(0, 0, 0, 0);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background-color: var(--color-button-bg);
+}
+
+.problem-library-button:hover {
+  background-color: var(--color-row-hover);
+  color: var(--color-accent);
+  transform: scale(1.1);
+}
+
 /* Modal Overlay */
 .modal-overlay {
   position: fixed;

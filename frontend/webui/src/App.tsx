@@ -4,11 +4,13 @@ import { ReadyState } from 'react-use-websocket';
 import MessageComponent from './components/MessageComponent';
 import ChatInput from './components/ChatInput';
 import SideBar from './components/SideBar';
+import ProblemLibrarySidebar from './components/ProblemLibrarySidebar';
 import HamburgerButton from './components/HamburgerButton';
 // import { simulateEvents } from './placeholderData';
 import logoUrl from './assets/pic.png';
 import logoSquareUrl from './assets/logo-square.png';
 import { useTranslation } from 'react-i18next';
+import type { Problem } from './types/problem';
 import type {
   Event,
   TextDeltaContent,
@@ -49,6 +51,7 @@ const App: React.FC = () => {
   const getInitialTheme = () => (localStorage.getItem('theme') as 'light' | 'dark' | null) || (getSystemPrefersDark() ? 'dark' : 'light');
   const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme());
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isProblemSidebarOpen, setIsProblemSidebarOpen] = useState(false);
   // Track mobile view for responsive behavior
   const [messages, setMessages] = useState<Message[]>([{
     id: 1,
@@ -892,6 +895,19 @@ const App: React.FC = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const toggleProblemSidebar = () => {
+    setIsProblemSidebarOpen(!isProblemSidebarOpen);
+  };
+
+  const handleProblemSelect = (problem: Problem) => {
+    console.log('Selected problem:', problem);
+    // Insert problem information into chat
+    const problemText = `我想做这道题：${problem.title} (难度: ${problem.difficulty})`;
+    setInputValue(problemText);
+    // Optionally close the sidebar after selection
+    // setIsProblemSidebarOpen(false);
+  };
+
   return (
     <div className="app-container">
       {isMobileView && (
@@ -923,6 +939,14 @@ const App: React.FC = () => {
           title={t('app.settingsButtonTitle')}
         >
           <i className="fas fa-cog"></i>
+        </button>
+
+        <button 
+          className="problem-library-button"
+          onClick={toggleProblemSidebar}
+          title="打开题库"
+        >
+          <i className="fas fa-book"></i>
         </button>
         
         {settingsOpen && (
@@ -1047,6 +1071,12 @@ const App: React.FC = () => {
           </footer>
         </div>
       </div>
+
+      <ProblemLibrarySidebar
+        isOpen={isProblemSidebarOpen}
+        onClose={() => setIsProblemSidebarOpen(false)}
+        onProblemSelect={handleProblemSelect}
+      />
     </div>
   );
 };
